@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+	<title> </title>
+	<head>
+	
+		<link rel="stylesheet" type="text/css" href="CSS/Container.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+		<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+
+	</head>
+	
+	
+	<script>
+	
+		window.onload = function(){
+		Display();
+	}
+
+	var ref = new Firebase("https://privatedb.firebaseio.com");
+	
+	var loggedIn = false;
+	
+	var k;
+	
+	var l;
+
+	
+
+	function Register(){
+		ref.createUser({
+		email: document.getElementById("email").value,
+		password: document.getElementById("password").value
+		}, 
+		function(error, userData) {
+		if (error) {
+			switch (error.code) {
+			  case "EMAIL_TAKEN":
+				console.log("The new user account cannot be created because the email is already in use.");
+				document.getElementById("label_Login").innerHTML = "The new user account cannot be created because the email is already in use.";
+				break;
+			  case "INVALID_EMAIL":
+				console.log("The specified email is not a valid email.");
+				document.getElementById("label_Login").innerHTML = "The specified email is not a valid email.";
+				break;
+			  default:
+				console.log("Error creating user:", error);
+				document.getElementById("label_Login").innerHTML = "Error creating user: " + error;
+			}
+		  } else {
+			console.log("Successfully created user account with uid:", userData.uid);
+			document.getElementById("label_Login").innerHTML = "Successfully created user account with uid:" + userData.uid;
+			
+			var useraccountRef = ref.child(document.getElementById("password").value);
+			var usersRef = useraccountRef.child("users");
+			usersRef.set({
+				  "score": {
+					'Total': 486,
+					'totalMins': 0
+				  }
+			});
+			
+			
+		  }
+		});
+		
+		}
+		
+		function Login()
+		{
+			ref.authWithPassword({
+			"email": document.getElementById("email").value,
+			"password": document.getElementById("password").value
+			}, function(error, authData) {
+			if (error) {
+				console.log("Login Failed!", error);
+				document.getElementById("label_Login").innerHTML = "Login Failed! " + error;
+			} else {
+				console.log("Authenticated successfully with payload:", authData);
+				document.getElementById("label_Login").innerHTML = "Authenticated successfully with payload:" + authData;
+				loggedIn = true;
+				Display();
+			}
+			});
+		}
+					
+		function Display(){
+		
+			if(loggedIn){
+				document.getElementById("login_Div").style.display = "none";
+				document.getElementById("Main_Div").style.display = "block";
+				document.getElementById("total").style.display = "block";
+			}else{
+			
+				document.getElementById("total").style.display = "none";
+				document.getElementById("Main_Div").style.display = "none";
+				document.getElementById("login_Div").style.display = "block";
+			}
+		}
+		
+		function Compute(){
+			document.getElementById("log").innerHTML = "";
+			x = document.getElementById("timeIn").value;
+			y = document.getElementById("timeOut").value;
+
+			inMins = document.getElementById("timeInMins").value;
+			outMins = document.getElementById("timeOutMins").value;
+			var totalMins = outMins;
+			
+			var l = 0;
+			
+			var j = 0;
+			
+			var n = 0;
+
+			var v = 0;
+			
+			if(y.value !="" && x.value !=""){
+			
+
+				if(document.getElementById("timeInSelector")[document.getElementById("timeInSelector").selectedIndex].value == "PM" && x !=12){
+				
+				x = Number(x) + 12;
+				
+				}
+				if(document.getElementById("timeInSelector")[document.getElementById("timeInSelector").selectedIndex].value == "AM" && x ==12){
+				
+				x = Number(x) + 12;
+				
+				}
+				
+				if(document.getElementById("timeOutSelector")[document.getElementById("timeOutSelector").selectedIndex].value == "PM" && y !=12){
+				
+				y = Number(y) + 12;
+				
+				}
+				if(document.getElementById("timeOutSelector")[document.getElementById("timeOutSelector").selectedIndex].value == "AM" && y ==12){
+				
+				y = Number(y) + 12;
+				}
+
+				document.getElementById("debug1").innerHTML = x;
+				document.getElementById("debug2").innerHTML = y;
+							
+				for (i = x; i != y; j++, i++) { 
+					if (i >= 25) { i = 1; }
+				}
+								
+
+				var useraccountRef = ref.child(document.getElementById("password").value);
+				var usersRef = useraccountRef.child("users");
+				var retrieveRef = usersRef.child("score");
+				retrieveRef.on("value", function(snapshot, prevChildKey) {
+				var totalScore = snapshot.val();
+			  
+			  	l = totalScore.totalMins; 
+				
+				
+				if(inMins != 00 || inMins != 0){
+				
+					if(inMins <= outMins){
+					
+						totalMins = Number(outMins) - Number(inMins);
+						
+					}else { 
+					
+						totalMins = 60 - (Number(inMins) - Number(outMins)); 
+						j--;
+						
+					}
+				}else{ totalMins = outMins;}
+				
+
+				if(inMins >= outMins){
+					if(totalMins < l){
+						n = (Number(totalMins) - Number(l)) * -1;
+					}else{ n = Number(totalMins) - Number(l) }					
+				}else{ n = (60 - Number(totalMins)) + Number(l); }
+
+				
+				
+				if(n >= 60){
+				
+					n = n - 60;
+					
+					j++;
+					
+				}
+				  
+				});
+				
+				document.getElementById("debug3").innerHTML = n;
+				
+
+			
+
+			document.getElementById("result").innerHTML = "Total Time of Work : " + j + " Hours And " + totalMins + "Mins";
+			}
+
+			var score = $('#result').val();
+			var userTimeIn = $('#timeIn').val();
+			var userTimeOut = $('#timeOut').val();
+			var userTimeInMins = $('#timeInMins').val();
+			var userTimeOutMins = $('#timeOutMins').val();
+			
+			
+			var month = $('#month').val();
+			var day = $('#day').val();
+			var year = $('#year').val();
+
+			var date = month + " "+ day + ", " + year;
+			
+			var useraccountRef = ref.child(document.getElementById("password").value);
+			var usersRef = useraccountRef.child("users");
+			var retrieveRef = usersRef.child("score");
+			retrieveRef.on("value", function(snapshot, prevChildKey) {
+			var totalScore = snapshot.val();
+			  
+			k = totalScore.Total; 
+		    document.getElementById("total").innerHTML = "Time Remaining = " + totalScore.Total + "Hours And "  + totalScore.totalMins + "Mins."; 
+			
+			
+			v = totalScore.totalMins;
+			
+			
+			});
+
+			var m = parseInt(k) - parseInt(j);
+			usersRef.set({
+				  "score": {
+					'Total': m,
+					'totalMins': n
+				  }
+			});
+			
+			var userlogRef = useraccountRef.child("log");
+			
+			userlogRef.push({ totalMins : v, total : k, date : date, userTimeIn : userTimeIn, userTimeOut : userTimeOut, userTimeInMins : userTimeInMins, userTimeOutMins : userTimeOutMins });
+			
+				
+			var retrieveRef = userlogRef;
+				userlogRef.on("child_added", function(snapshot, prevChildKey) {
+				var newPost = snapshot.val();
+			  
+				displayAdded(newPost.total, newPost.totalMins, newPost.date, newPost.userTimeIn, newPost.userTimeOut, newPost.userTimeInMins, newPost.userTimeOutMins);
+			  
+			});
+				
+											
+			function displayAdded(total, totalMins, date, userTimeIn, userTimeOut, userTimeInMins, userTimeOutMins) {
+				$('<div/>').text(" || Time-Out = " + userTimeOut + " : " + userTimeOutMins + " || Remaining = " + total + "Hours And " + totalMins + "Mins.").prepend($('<em/>').text(date + " || Time-In = " + userTimeIn + " : " + userTimeInMins)).appendTo($('#log'));
+				$('#log')[0].scrollTop = $('#log')[0].scrollHeight;
+			 };	
+			}
+
+			
+			function History(){
+				document.getElementById("log").innerHTML = "";
+				var useraccountRef = ref.child(document.getElementById("password").value);
+				var userlogRef = useraccountRef.child("log");
+				var retrieveRef = userlogRef;
+				userlogRef.on("child_added", function(snapshot, prevChildKey) {
+				  var newPost = snapshot.val();
+				  
+				  displayHistory(newPost.total, newPost.totalMins, newPost.date, newPost.userTimeIn, newPost.userTimeOut, newPost.userTimeInMins, newPost.userTimeOutMins);
+				  
+				});
+				function displayHistory(total, totalMins, date, userTimeIn, userTimeOut, userTimeInMins, userTimeOutMins) {
+				$('<div/>').text(" || Time-Out = " + userTimeOut + " : " + userTimeOutMins + " || Remaining = " + total + "Hours And " + totalMins + "Mins.").prepend($('<em/>').text(date + " || Time-In = " + userTimeIn + " : " + userTimeInMins)).appendTo($('#log'));
+				$('#log')[0].scrollTop = $('#log')[0].scrollHeight;
+				};	
+				
+				var useraccountRef = ref.child(document.getElementById("password").value);
+				var usersRef = useraccountRef.child("users");
+				var retrieveRef = usersRef.child("score");
+				retrieveRef.on("value", function(snapshot, prevChildKey) {
+				var totalScore = snapshot.val();
+			  
+			  	k = totalScore.Total; 
+				document.getElementById("total").innerHTML = "Time Remaining = " + totalScore.Total + "Hours And "  + totalScore.totalMins + "Mins."; 
+				  
+				});
+			}
+			
+
+	</script>
+	<body bgcolor= #4d4d4d>
+	
+	<center>
+		<div id="box-container">
+		
+			<p>OJT Calculator (486 Hours)</p>
+			
+		</div>
+		</br>
+	
+		
+		<div id="login_Div">
+			<p id='label_side'>
+				Email :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="email"></br></br>
+				Password : <input type="password" id="password"></br>
+			</p>
+			<p id="label_Login"></p>
+			<button id= "button-design" onclick= "Login(), History()">Login</button>
+			<button id= "button-design" onclick= "Register()">Register</button>
+			
+
+			
+		</div>
+		
+		</br>
+		</br>
+		
+		<div id='total'></div>
+		
+		<div id="Main_Div">
+		
+		<p id='label_side'>
+		
+			<select id= "month">
+			  <option value="January">January</option>
+			  <option value="Febuary">Febuary</option>
+			  <option value="March">March</option>
+			  <option value="April">April</option>
+ 			  <option value="May">May</option>
+			  <option value="June">June</option>
+ 			  <option value="July">July</option>
+			  <option value="August">August</option>
+			  <option value="September">September</option>
+			  <option value="October">October</option>
+			  <option value="November">November</option>
+			  <option value="December">December</option>
+			</select>
+			
+			<select id= "day">
+			  <option value="1">1</option>
+			  <option value="2">2</option>
+			  <option value="3">3</option>
+			  <option value="4">4</option>
+			  <option value="5">5</option>
+			  <option value="6">6</option>
+			  <option value="7">7</option>
+			  <option value="8">8</option>
+			  <option value="9">9</option>
+			  <option value="10">10</option>
+			  <option value="11">11</option>
+			  <option value="12">12</option>
+			  <option value="13">13</option>
+			  <option value="14">14</option>
+			  <option value="15">15</option>
+			  <option value="16">16</option>
+			  <option value="17">17</option>
+			  <option value="18">18</option>
+			  <option value="19">19</option>
+			  <option value="20">20</option>
+			  <option value="21">21</option>
+			  <option value="22">22</option>
+			  <option value="23">23</option>
+			  <option value="24">24</option>
+			  <option value="25">25</option>
+			  <option value="26">26</option>
+			  <option value="27">27</option>
+			  <option value="28">28</option>
+			  <option value="29">29</option>
+			  <option value="30">30</option>
+			  <option value="31">31</option>
+			</select>
+			
+			<select id= "year">
+			  <option value="2015">2015</option>
+			  <option value="2016">2016</option>
+			  <option value="2017">2017</option>
+			  <option value="2018">2018</option>
+			  <option value="2019">2019</option>
+			  <option value="2020">2020</option>
+			</select></br></br>
+			
+			
+			Time In :   &nbsp;&nbsp;<input type="number" id="timeIn"> <input type="number" id="timeInMins" value= "00"> 
+			<select id= "timeInSelector">
+			  <option value="AM">AM</option>
+			  <option value="PM">PM</option>
+			</select></br></br>
+			Time Out : <input type="number" id="timeOut"> <input type="number" id="timeOutMins" value= "00">
+			<select id = "timeOutSelector">
+			  <option value="PM">PM</option>
+			  <option value="AM">AM</option>
+			</select></br></br>
+
+		</p>
+		
+		<p id = "result"></p>
+		
+		<button id= "button-design" onclick= "Compute(), History()">Compute</button>
+		<button id= "button-design" onclick= "History()">Show History</button>
+		
+		<div id='labels'><p>Date&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;Time-In&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time-Out&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;Total</p></div>
+		<div id='log'></div>
+		<div id='debug1'></div>
+		<div id='debug2'></div>
+		<div id='debug3'></div>
+		
+		
+		</div>
+	</center>
+	
+	
+	
+	</body>
+</html>
