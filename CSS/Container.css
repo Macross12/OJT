@@ -47,7 +47,7 @@ input:focus{
 }
 button:hover{
 	background-color: #595959;
-	box-shadow: 0px 0px 50px white;
+	box-shadow: 0px 0px 75px white;
 }
 div:hover{
 	box-shadow: 0px 0px 50px black;
@@ -69,6 +69,7 @@ div:hover{
 	border: 1px solid black;
 	font-weight: bold;
 	font-size: 40px;
+	color: white;
 }
 
 #total{
@@ -84,6 +85,18 @@ div:hover{
 	color: white;
 	border: 1px solid black;
 }
+
+
+
+p#log {
+	height: 250px;
+    overflow: auto;
+}
+
+
+
+
+
 
 #labels{
 	font-size: 40px;
@@ -123,10 +136,22 @@ div:hover{
     background-image:    url(../res/Background.jpg);
     background-size:     100% 100%;                      
     background-repeat:   no-repeat;
-    background-position: center center;      
-	back
+    background-position: center center;  
 }
-
+#button-design2{
+	opacity: 0.6;
+	background-color: black;
+	font-weight: bold;
+	font-size: 30px;
+	padding: 10px 50px;
+	border: 2px solid black;
+	color: white;
+	text-shadow: 0px 0px 10px white;
+	width: 400px;
+	height: 50px;
+	box-shadow: 0px 0px 25px gray;
+	
+}
 
 
 
