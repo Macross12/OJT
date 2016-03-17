@@ -2,38 +2,45 @@
 	text-align: center;
 	font-size: 50px;
 	width: 1000px;
-	border: 5px solid black;
-	background-color: #808080;
+	border: 0.1px solid black;
+	background-color: black;
 	box-shadow: 0px 0px 100px black;
 	font-weight: bold;
 	text-shadow: 2px 2px 10px black;
-	color: #8c8c8c;
+	color: white;
+	opacity: 0.4;
 }
 #box-container:hover{
 	background-color: #595959;
 	color: white;
 	box-shadow: 0px 0px 100px white;
 	text-shadow: 2px 2px 50px black;
+
 }
 
 input{
-	border: 2px solid darkblue;
+	background-color: transparent;
+	border: 2px solid black;
 	text-align: center;
 	font-weight: bold;
 	width:250px;
 	height:25px;
 	font-size: 20px;
-	box-shadow: 0px 0px 25px lightgray;
+	box-shadow: 0px 0px 15px white;
+	color: white;
+}
+input:focus{
+	box-shadow: 0px 0px 25px white;
+	outline: 0 none;
 }
 
 #button-design{
-	filter: alpha(opacity=60);
-	background-color: grey;
-	opacity: 0.4px;
+	opacity: 0.9;
+	background-color: black;
 	font-weight: bold;
 	font-size: 15px;
 	padding: 10px 50px;
-	border: 1px solid black;
+	border: 2px solid black;
 	color: white;
 	text-shadow: 0px 0px 10px black;
 	
@@ -43,8 +50,19 @@ button:hover{
 	box-shadow: 0px 0px 50px white;
 }
 div:hover{
-	background-color: #595959;
 	box-shadow: 0px 0px 50px black;
+}
+
+#login_Div{
+	padding-top: 20px;
+	width: 420px;
+	height: 200px;
+	opacity: 0.5;
+}
+
+#login_Div:hover{
+	box-shadow: 0px 0px 50px white;
+	opacity: 0.9;
 }
 
 #result{
@@ -68,7 +86,7 @@ div:hover{
 }
 
 #labels{
-	font-size: 50px;
+	font-size: 40px;
 	color: white;
 	border: 1px solid black;
 	
@@ -86,7 +104,16 @@ div:hover{
 	font-size: 20px;
 	
 }
-
+#Main_Div{
+	width: 900px;
+	
+}
+#Main_Div:hover{
+	background-color: rgba(0, 0, 0, 0.4);
+}
+#log:hover{
+	background-color: rgba(255, 255, 255, 0.2);
+}
 
 
 
