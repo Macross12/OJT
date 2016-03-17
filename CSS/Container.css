@@ -137,6 +137,7 @@ p#log {
     background-size:     100% 100%;                      
     background-repeat:   no-repeat;
     background-position: center center;  
+	color: white;
 }
 #button-design2{
 	opacity: 0.6;
@@ -152,7 +153,6 @@ p#log {
 	box-shadow: 0px 0px 25px gray;
 	
 }
-
 
 
 
