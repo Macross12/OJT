@@ -114,6 +114,18 @@ div:hover{
 #log:hover{
 	background-color: rgba(255, 255, 255, 0.2);
 }
+#bgImage {
+	position: fixed;
+	top: 0;
+	left: 0;
+	min-height: 100%;
+	min-width: 100%;
+    background-image:    url(../res/Background.jpg);
+    background-size:     100% 100%;                      
+    background-repeat:   no-repeat;
+    background-position: center center;      
+	back
+}
 
 
 
