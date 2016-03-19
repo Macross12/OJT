@@ -85,7 +85,7 @@
 		}
 					
 		function Display(){
-		
+			document.getElementById("loading").style.display = "none";
 			if(loggedIn){
 				document.getElementById("login_Div").style.display = "none";
 				document.getElementById("Main_Div").style.display = "block";
@@ -286,7 +286,7 @@
 	</script>
 	
 	<body>
-	
+	<div id="loading"><center><p id="loadingText">...LOADING...</p></center></div>
 	<div id='bgImage'>
 	<center>
 	
