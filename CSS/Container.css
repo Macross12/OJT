@@ -89,6 +89,11 @@ div:hover{
 }
 
 
+
+p#log {
+
+}
+
 #labels{
 	font-size: 40px;
 	color: white;
@@ -133,6 +138,7 @@ div:hover{
 	color: white;
 	height: 250px;
     overflow: auto;
+	z-index: 0;
 }
 #button-design2{
 	opacity: 0.6;
@@ -146,7 +152,24 @@ div:hover{
 	width: 400px;
 	height: 50px;
 	box-shadow: 0px 0px 25px gray;
-	
+}
+
+#loading{
+	position: fixed;
+	top: 0;
+	left: 0;
+	min-height: 100%;
+	min-width: 100%;
+    background-color:    black;
+    background-size:     100% 100%;                      
+    background-repeat:   no-repeat;
+    background-position: center center;  
+	z-index: 1;
+}
+
+#loadingText{
+	color: white;
+	font-size: 50px;
 }
 
 
